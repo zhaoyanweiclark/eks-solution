@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: helloworld
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: helloworld
+  name: deployment-helloworld
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: app-helloworld
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: app-helloworld
+    spec:
+      containers:
+      - image: 602222598878.dkr.ecr.ap-southeast-2.amazonaws.com/api-helloworld:latest
+        imagePullPolicy: Always
+        name: app-helloworld
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: helloworld
+  name: service-helloworld
+spec:
+  ports:
+    - port: 8888
+      targetPort: 8080
+      protocol: TCP
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: app-helloworld
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: helloworld
+  name: ingress-helloworld
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: service-helloworld
+              port:
+                number: 8888
