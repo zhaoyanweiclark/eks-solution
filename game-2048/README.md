@@ -34,7 +34,7 @@ Default output format [None]:
 ```
 
 5. Complete EKS infrastructure deployment with cluster-name=`stqd-demo`
-From <>
+From <https://github.com/zhaoyanweiclark/eks-solution/tree/master/initialize>
 
 ### Launch Steps
 
