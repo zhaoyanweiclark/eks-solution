@@ -8,8 +8,9 @@
 
 #### kubernetes概念
 
+- Cluster
 - Master：集群控制节点，每个集群需要至少一个master节点负责集群的管控
-- Node：工作负载节点，由master分配容器到这些node工作节点上，然后node节点上的docker负责容器的运行
+- Worker：工作负载节点，由master分配容器到这些node工作节点上，然后node节点上的docker负责容器的运行
 - Pod：kubernetes的最小控制单元，容器都是运行在pod中的，一个pod中可以有1个或者多个容器
 - Controller：控制器，通过它来实现对pod的管理，比如启动pod、停止pod、伸缩pod的数量等等
 - Service：pod对外服务的统一入口，下面可以维护者同一类的多个pod
