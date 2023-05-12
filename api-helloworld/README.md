@@ -57,9 +57,12 @@ $ aws sts get-caller-identity --query Account | docker build -t $(xargs).dkr.ecr
 
 4. Login ECR and push image
 ```bash
-$ aws ecr get-login-password --region ap-southeast-2 | \
-  docker login  --username AWS --password-stdin $(aws sts get-caller-identity --query Account | xargs).dkr.ecr.ap-southeast-2.amazonaws.com
-$ aws sts get-caller-identity --query Account | docker push $(xargs).dkr.ecr.ap-southeast-2.amazonaws.com/api-helloworld:latest
+$ aws sts get-caller-identity --query Account \
+  | echo "$(xargs).dkr.ecr.ap-southeast-2.amazonaws.com" \
+  | echo "$(aws ecr get-login-password --region ap-southeast-2) $(xargs)" \
+  | docker login  --username AWS --password $(xargs)
+$ aws sts get-caller-identity --query Account \
+  | docker push $(xargs).dkr.ecr.ap-southeast-2.amazonaws.com/api-helloworld:latest
 ```
 
 5. Deploymetn with kubectl command
